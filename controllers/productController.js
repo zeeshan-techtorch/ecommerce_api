@@ -1,0 +1,56 @@
+const {Product, Category} = require("../models/index");
+const path = require("path");
+const fs = require("fs")
+
+exports.createProduct = async (req, res) => {
+    const { name, description, price, stock, category_id } = req.body;
+    const image = req.file?.filename;
+    
+ 
+  try {
+     // Validate category
+    const category = await Category.findByPk(category_id);
+    if (!category) {
+      return res.status(400).json({ 
+        status:400,
+        message: "Invalid category" 
+      });
+    }
+    const product = await Product.create({name,description,price,stock,category_id,image:`uploads/product/${image}`})
+    return res.status(201).json({status:201,message:"Product create successfully.",product});
+    
+  } catch (err) {
+    res.status(500).json({ message: 'Error creating product', error: err.message });
+  }
+};
+
+
+
+exports.getAllProduct = async (req,res)=>{
+   try {
+    const products = await Product.findAll({
+      include: [{ model: Category }]
+    });
+    return res.status(200).json(products);
+  } catch (err) {
+    res.status(500).json({ message: "Error fetching products", error: err.message });
+  }
+}
+
+
+exports.getProductById = async (req,res)=>{
+  const product_id = req.params.product_id;
+   try {
+    const product = await Product.findByPk(product_id,{
+      include: [{ model: Category }]
+    });
+
+    return res.status(200).json(product);
+  } catch (err) {
+    res.status(500).json({ message: "Error fetching product", error: err.message });
+  }
+}
+
+
+
+
