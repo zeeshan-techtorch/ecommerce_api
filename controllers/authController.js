@@ -151,7 +151,8 @@ exports.forgotPassword = async (req, res) => {
         user.resetToken = token;
         await user.save();
 
-        const resetLink = `http://localhost:3000/reset-password/${token}`;
+        res.status(200).json({ status:200, message: "Reset link sent to email" });
+         const resetLink = `http://localhost:3000/reset-password/${token}`;
         await sendEmail({
             to: email,
             subject: "Reset Your Password",
@@ -162,8 +163,6 @@ exports.forgotPassword = async (req, res) => {
             </p>
             <p style="text-align: center; margin-top: 20px;">Or copy this link: <br/> <a href="${resetLink}">${resetLink}</a></p>`,
         })
-
-        return res.status(200).json({ status:200, message: "Reset link sent to email" });
 
     } catch (error) {
         return res.status(500).json({
