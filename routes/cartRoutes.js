@@ -4,8 +4,8 @@ const { addToCart, getCart, removeFromCart,updateCartItem, clearCart } = require
 const authenticate  = require('../middleware/auth');
 
 
-router.post('/add-item', authenticate, addToCart);
-router.get("/get-all-item",authenticate,getCart);
+router.post('/', authenticate, addToCart);
+router.get("/",authenticate,getCart);
 router.delete('/remove-item/:product_id', authenticate, removeFromCart);
 router.put("/update-item/:item_id", authenticate,updateCartItem);
 router.delete("/clear", authenticate, clearCart);

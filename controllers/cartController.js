@@ -2,8 +2,9 @@ const {User,Cart,CartItem,Product, Category} = require('../models/index');
 
 // ✅ Add to Cart
 exports.addToCart = async (req, res) => {
-  const { product_id, quantity } = req.body;
+  const { product_id } = req.body;
   const user_id = req.user.user_id;
+  let quantity = 1;
 
   try {
     let cart = await Cart.findOne({ where: { user_id } });
@@ -31,7 +32,7 @@ exports.addToCart = async (req, res) => {
       });
     }
 
-    return res.status(201).json({ status:201, message: 'Product added to cart successfully' });
+    return res.status(201).json({ status:201, message: 'Product added to cart successfully', cart});
   } catch (err) {
    return res.status(500).json({ message: 'Error adding to cart', error: err.message });
   }
