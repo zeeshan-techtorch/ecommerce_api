@@ -64,7 +64,7 @@ exports.getCart = async (req, res) => {
       ]
     });
 
-    if (!cart) return res.json({ message: 'Cart is empty', items: [] });
+    if (!cart) return res.json({ message: 'Cart is empty', CartItems: [] });
 
     res.status(200).json(cart);
   } catch (err) {
