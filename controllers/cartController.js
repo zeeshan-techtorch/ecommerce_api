@@ -75,7 +75,7 @@ exports.getCart = async (req, res) => {
 
 // ✅ Remove Item from Cart
 exports.removeFromCart = async (req, res) => {
-  const { product_id } = req.params;
+  const { cartItem_id } = req.params;
   const user_id = req.user.user_id;
 
   try {
@@ -84,15 +84,15 @@ exports.removeFromCart = async (req, res) => {
     if (!cart) return res.status(404).json({ message: 'Cart not found' });
 
     const deleted = await CartItem.destroy({
-      where: { cart_id: cart.cart_id, product_id }
+      where: { cart_id: cart.cart_id, cartItem_id }
     });
 
     if (deleted === 0)
-      return res.status(404).json({ message: 'Product not found in cart' });
+      return res.status(404).json({status:404, message: 'Product not found in cart' });
 
-    res.status(200).json({ message: 'Product removed from cart' });
+  return res.status(200).json({ status:200, message: 'Product removed from cart' });
   } catch (err) {
-    res.status(500).json({ message: 'Error removing item', error: err.message });
+    res.status(500).json({status:500, message: 'Error removing item', error: err.message });
   }
 };
 
