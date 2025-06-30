@@ -29,6 +29,12 @@ exports.register = async (req, res) => {
     const token = crypto.randomBytes(32).toString("hex");
 
     await User.create({ name, email, phone, password, resetToken: token });
+     res.status(201)
+      .json({
+        status: 201,
+        message: "Registration successful. Please Check your email to verify your account."
+      });
+
     const link = `http://localhost:4000/api/v1/auth/verify-user/${token}`;
     await sendEmail({
       to: email,
@@ -36,11 +42,6 @@ exports.register = async (req, res) => {
       text: `Please verify your account.`,
       html: `<p>Click to verify: <a href="${link}">${link}</a></p>`,
     })
-    return res.status(201)
-      .json({
-        status: 201,
-        message: "Registration successful. Please Check your email to verify your account."
-      });
   }
   catch (err) {
     res.status(500).json({ message: 'Server error', error: err.message });
@@ -90,7 +91,7 @@ exports.login = async (req, res) => {
       message: "User login successfully",
       accessToken: tokens.accessToken,
       refreshToken: tokens.refreshToken,
-      user:{name:user.name ,email:user.email}
+      user:{name:user.name ,email:user.email, role:user.role}
     });
   } catch (err) {
     res.status(500).json({ message: 'Server error', error: err.message });
