@@ -36,12 +36,11 @@ exports.register = async (req, res) => {
       });
 
     const link = `http://localhost:4000/api/v1/auth/verify-user/${token}`;
-    await sendEmail({
-      to: email,
-      subject: "Use This Link to Activate Your Account",
-      text: `Please verify your account.`,
-      html: `<p>Click to verify: <a href="${link}">${link}</a></p>`,
-    })
+    await sendEmail(email, 
+      "Use This Link to Activate Your Account",
+       `Please verify your account.`,
+      `<p>Click to verify: <a href="${link}">${link}</a></p>`,
+    )
   }
   catch (err) {
     res.status(500).json({ message: 'Server error', error: err.message });
@@ -68,12 +67,12 @@ exports.login = async (req, res) => {
       user.resetToken=token;
       await user.save();
       const link = `http://localhost:4000/api/v1/auth/verify-user/${token}`;
-      await sendEmail({
-        to: email,
-        subject: "Use This Link to Activate Your Account",
-        text: `Please verify your account.`,
-        html: `<p>Click to verify: <a href="${link}">${link}</a></p>`,
-      })
+      await sendEmail(
+        email,
+        "Use This Link to Activate Your Account",
+        `Please verify your account.`,
+        `<p>Click to verify: <a href="${link}">${link}</a></p>`,
+      )
        return res.status(201)
       .json({
         status: 201,
@@ -154,16 +153,16 @@ exports.forgotPassword = async (req, res) => {
 
         res.status(200).json({ status:200, message: "Reset link sent to email" });
          const resetLink = `http://localhost:3000/reset-password/${token}`;
-        await sendEmail({
-            to: email,
-            subject: "Reset Your Password",
-            text: `We received a request to reset your password. Click the button below to set a new password`,
-            html: `<p style="text-align: center;">
+        await sendEmail(
+           email,
+            "Reset Your Password",
+            `We received a request to reset your password. Click the button below to set a new password`,
+            `<p style="text-align: center;">
                  <a href="${resetLink}" style="display: inline-block; padding: 10px 20px; background-color: #007bff; color: white; text-decoration: none; border-radius: 4px;">Reset Password</a>
 
             </p>
             <p style="text-align: center; margin-top: 20px;">Or copy this link: <br/> <a href="${resetLink}">${resetLink}</a></p>`,
-        })
+        )
 
     } catch (error) {
         return res.status(500).json({
@@ -188,4 +187,20 @@ exports.resetPassword = async (req, res) => {
     } catch (error) {
         return res.status(500).json({ status: 500, serror: error.message });
     }
+}
+
+
+exports.sendEmail = async (req, res) =>{
+  const email = req.body.email;
+    try {
+      await sendEmail(email,
+       "Use This Link to Activate Your Account",
+       "Please verify your account.",
+       `<p>Click to verify</p>`,
+    );
+
+    return res.status(200).json({message:"Email sent successfully."})
+  } catch (error) {
+    return res.status(500).json({error:error.message});
+  }
 }

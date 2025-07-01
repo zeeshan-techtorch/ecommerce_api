@@ -1,41 +1,32 @@
-const nodemailer = require("nodemailer");
+const nodemailer = require('nodemailer');
+require('dotenv').config();
 
-let transporter;
-let testAccount;
-
-const init = async () => {
-  testAccount = await nodemailer.createTestAccount();
-
-  transporter = nodemailer.createTransport({
-    host: "smtp.ethereal.email",
-    port: 587,
-    secure: false,
-    auth: {
-      user: testAccount.user,
-      pass: testAccount.pass,
-    },
-  });
-};
-
-const sendEmail = async ({ to, subject, text, html }) => {
+exports.sendEmail = async (to, subject, text, html) => {
   try {
-    if (!transporter) {
-      await init();
-    }
+     if (!to) throw new Error("Recipient email (to) is required");
+
+    console.log('Sending email to:', to);
+    
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+    });
 
     const info = await transporter.sendMail({
-      from: `"URL SHORTENER" <${testAccount.user}>`,
+      from: process.env.EMAIL_USER,
       to,
       subject,
       text,
       html,
     });
 
-    const testEmailURL = nodemailer.getTestMessageUrl(info);
-    console.log("Verify Email:", testEmailURL);
+    console.log('Email sent:', info.response);
+    return info;
   } catch (error) {
-    console.error("Error sending email:", error);
+    console.error('Error sending email:', error);
+    throw error; // propagate to catch in controller
   }
 };
-
-module.exports = { sendEmail };
