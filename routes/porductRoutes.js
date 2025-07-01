@@ -5,8 +5,8 @@ const { createProduct, getAllProduct, getProductById, deleteProduct} = require("
 const authenticate = require("../middleware/auth");
 const isAdmin = require("../middleware/admin");
 
-router.post("/create-product",authenticate,isAdmin,upload.single("image"),createProduct)
-router.get("/get-all-product",getAllProduct);
+router.post("/",authenticate,isAdmin,upload.single("image"),createProduct)
+router.get("/",getAllProduct);
 router.get("/:product_id",getProductById);
 router.delete('/:product_id',authenticate, isAdmin, deleteProduct);
 

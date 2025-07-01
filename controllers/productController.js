@@ -5,7 +5,7 @@ const fs = require("fs")
 exports.createProduct = async (req, res) => {
     const { name, description, price, stock, category_id } = req.body;
     const image = req.file?.filename;
-    
+       
  
   try {
      // Validate category
@@ -16,8 +16,8 @@ exports.createProduct = async (req, res) => {
         message: "Invalid category" 
       });
     }
-    const product = await Product.create({name,description,price,stock,category_id,image:`uploads/product/${image}`})
-    return res.status(201).json({status:201,message:"Product create successfully.",product});
+    await Product.create({name,description,price,stock,category_id,image:`uploads/product/${image}`})
+    return res.status(201).json({status:201,message:"Product created successfully."});
     
   } catch (err) {
     res.status(500).json({ message: 'Error creating product', error: err.message });
