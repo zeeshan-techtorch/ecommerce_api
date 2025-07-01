@@ -54,7 +54,7 @@ exports.getProductById = async (req,res)=>{
 
 exports.deleteProduct = async (req, res) => {
   const product_id = req.params.product_id;
-  
+
   try {
     // Step 1: Find product
     const product = await Product.findByPk(product_id);
