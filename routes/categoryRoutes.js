@@ -4,7 +4,7 @@ const { createCategory, getAllCategory} = require('../controllers/categoryContro
 const authenticate = require("../middleware/auth");
 const isAdmin = require("../middleware/admin");
 
-router.post('/create-category',authenticate,isAdmin, createCategory);
-router.get('/get-all-category',authenticate,isAdmin, getAllCategory);
+router.post('/',authenticate,isAdmin, createCategory);
+router.get('/',authenticate,isAdmin, getAllCategory);
 
 module.exports = router;
