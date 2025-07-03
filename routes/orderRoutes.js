@@ -4,10 +4,10 @@ const { createOrder,getUserOrders,getOrderById, getAllOrders,updateOrderStatus} 
 const  authenticate  = require('../middleware/auth');
 const isAdmin = require("../middleware/admin");
 
-router.post('/place-order', authenticate, createOrder);
-router.get("/get-all-order", authenticate,getUserOrders);
+router.post('/', authenticate, createOrder);
+router.get("/", authenticate,getUserOrders);
 router.get("/:order_id", authenticate, getOrderById);
-router.get("/admin/get-all-order", authenticate, isAdmin, getAllOrders);
+router.get("/admin/", authenticate, isAdmin, getAllOrders);
 router.put("/admin/status/:order_id", authenticate, isAdmin, updateOrderStatus);
 // router.put("/cancel/:id", authenticate, orderController.cancelOrder);
 
