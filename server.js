@@ -9,6 +9,7 @@ const productRoutes = require("./routes/porductRoutes")
 const categoryRoutes = require("./routes/categoryRoutes");
 const cartRoutes = require("./routes/cartRoutes");
 const orderRoutes = require("./routes/orderRoutes")
+const stripeRoutes = require('./routes/stripeRoutes')
 
 
 
@@ -26,6 +27,8 @@ app.use("/api/v1/products", productRoutes);
 app.use("/api/v1/category", categoryRoutes);
 app.use("/api/v1/cart", cartRoutes);
 app.use("/api/v1/order", orderRoutes);
+app.use('/api/v1/stripe',stripeRoutes );
+
 
 
 // Simple API
