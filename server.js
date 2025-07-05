@@ -28,6 +28,7 @@ app.use("/api/v1/category", categoryRoutes);
 app.use("/api/v1/cart", cartRoutes);
 app.use("/api/v1/order", orderRoutes);
 app.use('/api/v1/stripe',stripeRoutes );
+app.use('/api/v1/payments/webhook', require('./routes/webhook')); 
 
 
 
